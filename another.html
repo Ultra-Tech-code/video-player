@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <video id="videoPlayer" width="640" height="360" controls>
+        <!-- Video source will be added dynamically -->
+    </video>
+    
+    <script>
+        // Function to download a video using a callback
+        function downloadVideo(url, callback) {
+            setTimeout(() => {
+                // Simulate downloading the video (replace with actual download logic)
+                const videoBlob = new Blob(['Video content'], { type: 'video/mp4' });
+                callback(videoBlob);
+            }, 2000); // Simulate a 2-second delay
+        }
+
+        // Function to play a video from a Blob using promises
+        function playVideo(blob) {
+            return new Promise((resolve, reject) => {
+                const videoPlayer = document.getElementById('videoPlayer');
+                const videoURL = URL.createObjectURL(blob);
+
+                videoPlayer.src = "https://static.videezy.com/system/resources/previews/000/008/445/original/Dark_Haired_Girl_in_disbelief_1.mp4";
+
+                videoPlayer.onended = () => {
+                    resolve('Video playback finished.');
+                };
+
+                videoPlayer.onerror = (error) => {
+                    reject(`Error playing video: ${error}`);
+                };
+
+                    .catch((error) => {
+                        reject(`Error playing video: ${error}`);
+                    });
+            });
+        }
+
+        // Usage: Replace 'your_video_url.mp4' with the actual video URL
+        // const videoURL = 'https://www.shutterstock.com/video/clip-1107153157-square-purple-neon-loop-60-fps-full?irclickid=zyRXsrzxcxyPW4YzPkSULyhEUkFWJuQFv1NU0s0&irgwc=1&pl=38919-1636625&utm_campaign=Eezy%2C%20LLC&utm_content=1636625&utm_medium=Affiliate&utm_source=38919&utm_term=www.videezy.com';
+        const videoURL = 'https://static.videezy.com/system/resources/previews/000/008/445/original/Dark_Haired_Girl_in_disbelief_1.mp4';
+
+        // Download and play the video using async/await
+        videoPlayer.addEventListener('click', async()=>{
+          try {
+                console.log('Downloading video...');
+                await downloadVideo(videoURL, async (videoBlob) => {
+                    console.log('Video downloaded.');
+                    try {
+                        console.log('Playing video...');
+                        const result = await playVideo(videoBlob);
+                        console.log(result);
+                    } catch (error) {
+                        console.error(error);
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        })
+         async function downloadAndPlayVideo() {
+            try {
+                console.log('Downloading video...');
+                await downloadVideo(videoURL, async (videoBlob) => {
+                    console.log('Video downloaded.');
+                    try {
+                        console.log('Playing video...');
+                        const result = await playVideo(videoBlob);
+                        console.log(result);
+                    } catch (error) {
+                        console.error(error);
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        downloadAndPlayVideo();
+    </script>
+</body>
+</html>
+
+</body>
+</html>

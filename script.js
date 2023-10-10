@@ -1,28 +1,48 @@
 const fetchMoviesButton = document.getElementById("fetchMovies");
-const cancelFetchButton = document.getElementById("cancelFetch");
+const playMovieButton = document.getElementById("playMovie");
 
-let controller = null;
+let videoUrl;
 
-fetchMoviesButton.addEventListener("click", async () => {
-    try {
-    log("Request started...");
-    const response = await fetch("/movies", {
-        signal: controller.signal
+fetchMoviesButton.addEventListener('click', () => {
+    videoUrl = "https://www.videezy.com/people/8452-dark-haired-girl-pensive-looks-at-camera";
+    downloadVideoCallback(videoUrl, (error) => {
+        if (error) {
+            resText.innerHTML = `<h2>Error downloading video: ${error}</h2>`;
+        } else {
+            resText.innerHTML = `<h2>Video Downloaded Successfully</h2>`;
+            playBtn.style.display = 'inline-block'; 
+        }
     });
-    const movies = await response.json();
-    log(`Fetched movies: ${JSON.stringify(movies)}`);
-    } catch (error) {
-    log(`Fetch error: ${error.name}`);
-    }
-    controller = null;
 });
 
-cancelFetchButton.addEventListener("click", () => {
-    if (controller) {
-    controller.abort();
+playBtn.addEventListener('click', () => {
+    if (videoUrl) {
+        playVideo(videoUrl);
+    } else {
+        resText.innerHTML = `<h2>Please download the video first.</h2>`;
     }
 });
 
-function log(message) {
-    document.getElementById("message").innerText = message;
+function downloadVideoCallback(url, callback) {
+    fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "video.mp4";
+            a.click();
+            URL.revokeObjectURL(url);
+            callback(null);
+        })
+        .catch(error => callback(error));
+}
+
+function playVideo(url) {
+    const videoPlayer = document.createElement('video');
+    videoPlayer.src = url;
+    videoPlayer.controls = true;
+    videoPlayer.style.width = '100%';
+    resText.innerHTML = ''; // Clear previous messages
+    resText.appendChild(videoPlayer);
 }
