@@ -11,9 +11,11 @@ fetchMoviesButton.addEventListener('click', () => {
     videoUrl = "https://www.videezy.com/people/8452-dark-haired-girl-pensive-looks-at-camera";
     downloadVideoCallback(videoUrl, (error) => {
         if (error) {
-            resText.innerHTML = `<h2>Error downloading video: ${error}</h2>`;
+            errorMessageDiv.style.display = "block";
+            successMessageDiv.style.display = "none";
         } else {
-            resText.innerHTML = `<h2>Video Downloaded Successfully</h2>`;
+            successMessageDiv.style.display = "block";
+            errorMessageDiv.style.display = "none";
             playMovieButton.style.display = 'inline-block'; 
         }
     });
@@ -23,7 +25,9 @@ playBtn.addEventListener('click', () => {
     if (videoUrl) {
         playVideo(videoUrl);
     } else {
-        resText.innerHTML = `<h2>Please download the video first.</h2>`;
+        errorMessageDiv.style.display = "block";
+        successMessageDiv.style.display = "none";
+        errorMessageDiv.innerHTML = `<h2>Please download the video first.</h2>`;
     }
 });
 
