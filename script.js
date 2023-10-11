@@ -1,5 +1,9 @@
 const fetchMoviesButton = document.getElementById("fetchMovies");
 const playMovieButton = document.getElementById("playMovie");
+const resText = document.getElementById("response");
+
+const errorMessageDiv = document.getElementById("error-message");
+const successMessageDiv = document.getElementById("success-message");
 
 let videoUrl;
 
@@ -10,7 +14,7 @@ fetchMoviesButton.addEventListener('click', () => {
             resText.innerHTML = `<h2>Error downloading video: ${error}</h2>`;
         } else {
             resText.innerHTML = `<h2>Video Downloaded Successfully</h2>`;
-            playBtn.style.display = 'inline-block'; 
+            playMovieButton.style.display = 'inline-block'; 
         }
     });
 });
@@ -24,7 +28,7 @@ playBtn.addEventListener('click', () => {
 });
 
 function downloadVideoCallback(url, callback) {
-    fetch(url)
+    fetch(url, {mode: 'no-cors'})
         .then(response => response.blob())
         .then(blob => {
             const url = URL.createObjectURL(blob);
