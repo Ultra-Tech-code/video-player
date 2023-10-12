@@ -10,14 +10,20 @@
 
     <button id="fetchMovies">Fetch Movies</button>
     <button id="playMovie">Play Movie</button>
-    <div id="response"></div>
+
+    <video id="videoPlayer" controls>
+        <source id="videoSource" src="" type="video/mp4">
+    </video>
+    
 
     <div id="error-message">
         Error: Something went wrong
     </div>
     <div id="success-message">
-        Success: Downloaded succesfully
+        Success: Download
     </div>
+
+    <div id="downloadStatus"></div>
 
  
 </body>

@@ -1,16 +1,22 @@
 const fetchMoviesButton = document.getElementById("fetchMovies");
 const playMovieButton = document.getElementById("playMovie");
-const resText = document.getElementById("response");
+
+
+const videoPlayer = document.getElementById("videoPlayer");
+const videoSource = document.getElementById("videoSource");
 
 const errorMessageDiv = document.getElementById("error-message");
 const successMessageDiv = document.getElementById("success-message");
 
+const substringToRemove = "https://www.videezy.com/people/";
 let videoUrl;
 
 fetchMoviesButton.addEventListener('click', () => {
     videoUrl = "https://www.videezy.com/people/8452-dark-haired-girl-pensive-looks-at-camera";
     downloadVideoCallback(videoUrl, (error) => {
         if (error) {
+
+            errorMessageDiv.innerHTML = `<h2>${error}</h2>`;
             errorMessageDiv.style.display = "block";
             successMessageDiv.style.display = "none";
         } else {
@@ -21,7 +27,7 @@ fetchMoviesButton.addEventListener('click', () => {
     });
 });
 
-playBtn.addEventListener('click', () => {
+playMovieButton.addEventListener('click', () => {
     if (videoUrl) {
         playVideo(videoUrl);
     } else {
@@ -37,20 +43,24 @@ function downloadVideoCallback(url, callback) {
         .then(blob => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
+            
             a.href = url;
-            a.download = "video.mp4";
+            a.download = videoUrl.replace(substringToRemove, '') + "-video.mp4";
             a.click();
+
+
+            videoSource.src = videoUrl;
+            // Load the video source
+            videoPlayer.load();
             URL.revokeObjectURL(url);
             callback(null);
         })
         .catch(error => callback(error));
 }
 
-function playVideo(url) {
-    const videoPlayer = document.createElement('video');
-    videoPlayer.src = url;
-    videoPlayer.controls = true;
-    videoPlayer.style.width = '100%';
-    resText.innerHTML = ''; // Clear previous messages
-    resText.appendChild(videoPlayer);
+
+function playVideo() {
+    successMessageDiv.style.display = "none";
+    videoPlayer.style.display = "block";
+    videoPlayer.play();
 }
